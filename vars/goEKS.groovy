@@ -10,6 +10,9 @@ def call(Map configMap){
         //     packageVersion = ''
                 
         // }
+        environment{
+            SONAR_HOME= tool "Sonar-scanner"
+        }
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
@@ -52,13 +55,44 @@ def call(Map configMap){
                         """
                     }
                 }
-            stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
-                steps {
-                    sh """
-                    echo "sonar-scanner" 
-                    """
+            // stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+            //     steps {
+            //         sh """
+            //         echo "sonar-scanner" 
+            //         """
+            //     }
+            // }
+
+            stage("SonarQube Code Analysis"){
+                steps{
+                    withSonarQubeEnv("Sonar-scanner"){
+                        sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=wanderlust -Dsonar.projectKey=wanderlust"
+                    }
                 }
             }
+
+            stage("OWASP Dependency Check"){
+                steps{
+                    dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                }
+            }
+        
+            stage("SonarQube Code Quality Gates"){
+                steps{
+                    timeout(time: 2, unit: "MINUTES"){
+                        waitForQualityGate abortPipeline: false
+                    }
+                }
+            }
+            
+            stage("Trivy filesystem Scan"){
+                steps{
+                    sh "trivy fs --format table -o trivy-fs-report.html ."
+                }
+            }
+
+
             stage('Build') {
                 steps {
                     sh """
