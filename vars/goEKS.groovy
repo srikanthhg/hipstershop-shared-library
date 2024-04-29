@@ -80,7 +80,7 @@ def call(Map configMap){
         
             stage("SonarQube Code Quality Gates"){
                 steps{
-                    timeout(time: 2, unit: "MINUTES"){
+                    timeout(time: 5, unit: "MINUTES"){
                         waitForQualityGate abortPipeline: false
                     }
                 }
