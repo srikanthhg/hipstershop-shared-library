@@ -10,9 +10,9 @@ def call(Map configMap){
         //     packageVersion = ''
                 
         // }
-        environment{
-            SONAR_HOME= tool "Sonar-scanner"
-        }
+        // environment{
+        //     SONAR_HOME= tool "Sonar-scanner"
+        // }
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
