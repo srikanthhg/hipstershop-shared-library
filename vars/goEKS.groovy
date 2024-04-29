@@ -66,7 +66,7 @@ def call(Map configMap){
             stage("SonarQube Code Analysis"){
                 steps{
                     withSonarQubeEnv("Sonar-scanner"){
-                        sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=wanderlust -Dsonar.projectKey=wanderlust"
+                        sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=${configMap.component} -Dsonar.projectKey=${configMap.component}"
                     }
                 }
             }
