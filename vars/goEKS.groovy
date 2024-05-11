@@ -117,7 +117,7 @@ def call(Map configMap){
                         nexusUrl: '172.31.66.27:8081',
                         //nexusURL: pipelineGlobals.nexusURL(),
                         groupId: 'com.hipstershop',
-                        version: '1.0.0'
+                        version: '1.0.0',
                         //version: "${packageVersion}",
                         repository: "${configMap.component}",
                         credentialsId: 'nexus1-auth', // store nexus credentials
