@@ -13,6 +13,10 @@ def call(Map configMap){
         // environment{
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
+        environment{
+            nexusUrl = "52.91.117.3:8081"
+        }
+        
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
@@ -104,26 +108,26 @@ def call(Map configMap){
                     """
                 }
             }
-                // stage('Publish Artifact') { // nexus artifact uploader plugin
-                //     steps {
-                //         nexusArtifactUploader(
-                //             nexusVersion: 'nexus3',
-                //             protocol: 'http',
-                //             //nexusUrl: "${nexusURL}",
-                //             nexusURL: pipelineGlobals.nexusURL(),
-                //             groupId: 'com.roboshop',
-                //             version: "${packageVersion}",
-                //             repository: "${configMap.component}",
-                //             credentialsId: 'nexus-auth', // store nexus credentials
-                //             artifacts: [
-                //                 [artifactId: "${configMap.component}",
-                //                 classifier: '',
-                //                 file: "${configMap.component}.zip",
-                //                 type: 'zip']
-                //             ]
-                //         )
-                //     }
-                // }
+                stage('Publish Artifact') { // nexus artifact uploader plugin
+                    steps {
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: "${nexusURL}",
+                            nexusURL: pipelineGlobals.nexusURL(),
+                            groupId: 'com.hipstershop',
+                            version: "${packageVersion}",
+                            repository: "${configMap.component}",
+                            credentialsId: 'nexus-auth', // store nexus credentials
+                            artifacts: [
+                                [artifactId: "${configMap.component}",
+                                classifier: '',
+                                file: "${configMap.component}.zip",
+                                type: 'zip']
+                            ]
+                        )
+                    }
+                }
             stage('Deploy') {
                 when {
                     expression {
