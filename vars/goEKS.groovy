@@ -119,7 +119,7 @@ def call(Map configMap){
                         groupId: 'com.hipstershop',
                         version: "${packageVersion}",
                         repository: "${configMap.component}",
-                        credentialsId: 'nexus-auth', // store nexus credentials
+                        credentialsId: 'nexus1-auth', // store nexus credentials
                         artifacts: [
                             [artifactId: "${configMap.component}",
                             classifier: '',
