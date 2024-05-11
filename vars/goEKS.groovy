@@ -111,7 +111,7 @@ def call(Map configMap){
                 stage('Publish Artifact') { // nexus artifact uploader plugin
                     steps {
                         nexusArtifactUploader(
-                            //nexusVersion: 'nexus3',
+                            nexusVersion: 'nexus3',
                             protocol: 'http',
                             nexusUrl: "${nexusURL}",
                             //nexusURL: pipelineGlobals.nexusURL(),
