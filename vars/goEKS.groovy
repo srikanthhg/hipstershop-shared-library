@@ -14,7 +14,7 @@ def call(Map configMap){
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
         environment{
-            nexusUrl = "52.91.117.3:8081"
+            nexusUrl = "52.91.117.3:8081/"
         }
         
         options {
@@ -114,7 +114,7 @@ def call(Map configMap){
                             nexusVersion: 'nexus3',
                             protocol: 'http',
                             nexusUrl: "${nexusURL}",
-                            nexusURL: pipelineGlobals.nexusURL(),
+                            //nexusURL: pipelineGlobals.nexusURL(),
                             groupId: 'com.hipstershop',
                             version: "${packageVersion}",
                             repository: "${configMap.component}",
