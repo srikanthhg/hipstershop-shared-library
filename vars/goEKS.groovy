@@ -13,9 +13,9 @@ def call(Map configMap){
         // environment{
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
-        // environment{
-        //     nexusUrl = '172.31.66.27:8081'
-        // }
+        environment{
+            nexusUrl = '172.31.74.236:8081'
+        }
         
         options {
             timeout(time: 1, unit: 'HOURS')
@@ -113,12 +113,12 @@ def call(Map configMap){
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        //nexusUrl: "${nexusURL}",
-                        nexusUrl: '172.31.74.236:8081',
+                        nexusUrl: "${nexusURL}",
+                        //nexusUrl: '172.31.74.236:8081',
                         //nexusURL: pipelineGlobals.nexusURL(),
                         groupId: 'com.hipstershop',
-                        version: '1.0.0',
-                        //version: "${packageVersion}",
+                        //version: '1.0.0',
+                        version: "${packageVersion}",
                         repository: "${configMap.component}",
                         credentialsId: 'nexus-auth', // store nexus credentials
                         artifacts: [
