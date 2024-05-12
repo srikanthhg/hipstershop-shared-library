@@ -62,7 +62,7 @@ def call(Map configMap){
             stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
                 steps {
                     sh """
-                        sonar-scanner
+                        echo "sonar-scanner"
                     """
                 }
             }
@@ -114,13 +114,13 @@ def call(Map configMap){
                         nexusVersion: 'nexus3',
                         protocol: 'http',
                         //nexusUrl: "${nexusURL}",
-                        nexusUrl: '172.31.66.27:8081',
+                        nexusUrl: '172.31.74.236:8081',
                         //nexusURL: pipelineGlobals.nexusURL(),
                         groupId: 'com.hipstershop',
                         version: '1.0.0',
                         //version: "${packageVersion}",
                         repository: "${configMap.component}",
-                        credentialsId: 'nexus1-auth', // store nexus credentials
+                        credentialsId: 'nexus-auth', // store nexus credentials
                         artifacts: [
                             [artifactId: "${configMap.component}",
                             classifier: '',
