@@ -34,15 +34,15 @@ def call(Map configMap){
                 }
             }
 
-            stage(){
-                steps{
-                }
-            }
+            // stage(){
+            //     steps{
+            //     }
+            // }
 
-            stage(){
-                steps{
-                }
-            }
+            // stage(){
+            //     steps{
+            //     }
+            // }
 
         }
 
