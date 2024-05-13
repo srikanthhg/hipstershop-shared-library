@@ -23,8 +23,7 @@ def call(Map configMap){
                 steps{
                     script {
                         def packageVersion = readFile('version.py').trim()
-                        if (packageVersion) { 
-                            packageVersion = packageVersion.version                        
+                        if (packageVersion) {                       
                             echo "Application version: $packageVersion"
                         } else {
                             error "Application version not found in main.go"
