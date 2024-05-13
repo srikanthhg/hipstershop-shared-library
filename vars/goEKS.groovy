@@ -44,7 +44,7 @@ def call(Map configMap){
                     }   
                 }
             }
-            stage('build') {
+            stage('Install Dependencies') {
                 steps {
                     sh """
                         go build -o ${configMap.component}

@@ -1,6 +1,10 @@
 def call(Map configMap){  
     pipeline{
-        agent any
+        agent{
+            node{
+                label 'NODE-1'
+            }
+        }
 
         options {
             timeout(time: 1, unit: 'HOURS')
@@ -15,7 +19,7 @@ def call(Map configMap){
         stages{
             stage('Clone code from GitHub'){
                 steps{
-                // git branch: 'main', url: 'https://github.com/srikanthhg/checkoutservice'
+                //git branch: 'main', url: 'https://github.com/srikanthhg/checkoutservice'
                 git url: 'https://github.com/srikanthhg/recommendationservice',  branch: 'main'
                 }
             }
@@ -32,15 +36,28 @@ def call(Map configMap){
                 }
             }
 
-            // stage(){
-            //     steps{
-            //     }
-            // }
+            stage('Install Dependencies'){
+                steps{
+                    sh """
+                    pip3.12 install -r requirements.txt
+                    """
+                }
+            }
 
-            // stage(){
-            //     steps{
-            //     }
-            // }
+            stage('Unit testing') {
+                steps {
+                    sh """
+                        echo "unit tests will run here" 
+                    """
+                }
+            }
+            stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+                steps {
+                    sh """
+                        "sonar-scanner"
+                    """
+                }
+            }
 
         }
 
