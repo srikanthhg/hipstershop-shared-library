@@ -39,7 +39,7 @@ def call(Map configMap){
             stage('Install Dependencies'){
                 steps{
                     sh """
-                    pip install -r requirements.txt
+                    pip3.12 install -r requirements.txt
                     """
                 }
             }
@@ -58,6 +58,59 @@ def call(Map configMap){
                     """
                 }
             }
+
+            stage('Build') {
+                steps {
+                    sh """
+                        ls -ltr
+                        zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
+                        ls -ltr
+                        
+                    
+                    """
+                }
+            }
+            stage('Publish Artifact') { // nexus artifact uploader plugin
+                steps {
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${nexusURL}",
+                        //nexusUrl: '172.31.74.236:8081',
+                        //nexusURL: pipelineGlobals.nexusURL(),
+                        groupId: 'com.hipstershop',
+                        //version: '1.0.0',
+                        version: "${packageVersion}",
+                        repository: "${configMap.component}",
+                        credentialsId: 'nexus-auth', // store nexus credentials
+                        artifacts: [
+                            [artifactId: "${configMap.component}",
+                            classifier: '',
+                            file: "${configMap.component}.zip",
+                            type: 'zip']
+                        ]
+                    )
+                }
+            }
+            stage('Deploy') {
+                when {
+                    expression {
+                        params.Deploy
+                    }
+                }
+                steps {
+                    script {
+                        def params = [
+                            string(name: 'version', value:"$packageVersion"),
+                            string(name: 'environment', value:"dev")
+                            // booleanParam(name: 'create', value: "${params.Deploy}")
+                        ]
+                        build job: "../${configMap.component}-deploy", wait: true, parameters: params
+                        
+                    }
+                }
+            }       
+
 
         }
 
