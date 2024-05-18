@@ -14,7 +14,6 @@ def call(Map configMap){
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
         tools {
-            java 'javarun' 
             gradle 'gradle-tool'
         }
         environment{
