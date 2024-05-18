@@ -13,9 +13,10 @@ def call(Map configMap){
         // environment{
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
-        // tools {
-        //     gradle 'javarun' 
-        // }
+        tools {
+            java 'javarun' 
+            gradle 'gradle-tool'
+        }
         environment{
             nexusURL = '172.31.74.236:8081'
         }
