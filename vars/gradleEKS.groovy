@@ -97,24 +97,24 @@ def call(Map configMap){
         //         )
         //     }
         // }
-        stage('Deploy') {
-            when {
-                expression {
-                    params.Deploy
-                }
-            }
-            steps {
-                script {
-                    def params = [
-                        string(name: 'version', value:"$packageVersion"),
-                        string(name: 'environment', value:"dev")
-                        // booleanParam(name: 'create', value: "${params.Deploy}")
-                    ]
-                    build job: "../${configMap.component}-deploy", wait: true, parameters: params
+        // stage('Deploy') {
+        //     when {
+        //         expression {
+        //             params.Deploy
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             def params = [
+        //                 string(name: 'version', value:"$packageVersion"),
+        //                 string(name: 'environment', value:"dev")
+        //                 // booleanParam(name: 'create', value: "${params.Deploy}")
+        //             ]
+        //             build job: "../${configMap.component}-deploy", wait: true, parameters: params
                     
-                }
-            }
-        }       
+        //         }
+        //     }
+        // }       
         post { 
             always { 
                 echo 'I will always say Hello again!'
