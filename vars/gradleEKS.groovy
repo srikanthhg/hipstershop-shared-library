@@ -30,56 +30,62 @@ def call(Map configMap){
             stage('Get the version') {
                 steps { 
                     script{
-                        def packageVersion = cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
-                        sh "Application version: $packageVersion"                    
-                    }   
-                }
-            }
-            stage('Install Dependencies') {
-                steps {
-                    sh """
-                        go build -o ${configMap.component}
-                    """
-                }
-            }
-            
-            stage('Unit testing') {
-                    steps {
-                        sh """
-                            echo "unit tests will run here" 
-                        """
+                        def version_value = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
+                        sh "echo Project in version value: $version_value"
+                        def version = version_value.split(/=/)[1]
+                        sh "echo final version: $version"
+                        // def packageVersion = readFile 'build.gradle'
+                        // cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
+                        // echo "Application version: $packageVersion"                    
                     }
-                }
-            stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+                }   
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh """
+                    go build -o ${configMap.component}
+                """
+            }
+        }
+            
+        stage('Unit testing') {
                 steps {
                     sh """
-                        "sonar-scanner"
+                        echo "unit tests will run here" 
                     """
                 }
             }
+        stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+            steps {
+                sh """
+                    "sonar-scanner"
+                """
+            }
+        }
 
-            // stage("SonarQube Code Analysis"){
-            //     steps{
-            //         withSonarQubeEnv("Sonar-scanner"){
-            //             sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=${configMap.component} -Dsonar.projectKey=${configMap.component}"
-            //         }
-            //     }
-            // }
+        // stage("SonarQube Code Analysis"){
+        //     steps{
+        //         withSonarQubeEnv("Sonar-scanner"){
+        //             sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=${configMap.component} -Dsonar.projectKey=${configMap.component}"
+        //         }
+        //     }
+        // }
 
-            // stage("OWASP Dependency Check"){
-            //     steps{
-            //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
-            //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            //     }
-            // }
-        
-            // stage("SonarQube Code Quality Gates"){
-            //     steps{
-            //         timeout(time: 5, unit: "MINUTES"){
-            //             waitForQualityGate abortPipeline: false
-            //         }
-            //     }
-            // }
+        // stage("OWASP Dependency Check"){
+        //     steps{
+        //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
+        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //     }
+        // }
+    
+        // stage("SonarQube Code Quality Gates"){
+        //     steps{
+        //         timeout(time: 5, unit: "MINUTES"){
+        //             waitForQualityGate abortPipeline: false
+        //         }
+        //     }
+        // }
             
             // stage("Trivy filesystem Scan"){
             //     steps{
@@ -88,17 +94,17 @@ def call(Map configMap){
             // }
 
 
-            stage('Build') {
-                steps {
-                    sh """
-                        ls -ltr
-                        zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
-                        ls -ltr
-                        
+        stage('Build') {
+            steps {
+                sh """
+                    ls -ltr
+                    zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
+                    ls -ltr
                     
-                    """
-                }
+                
+                """
             }
+        }
             stage('Publish Artifact') { // nexus artifact uploader plugin
                 steps {
                     nexusArtifactUploader(
