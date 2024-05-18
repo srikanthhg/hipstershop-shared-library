@@ -60,7 +60,7 @@ def call(Map configMap){
                     sh """
                         chmod +x gradlew
                         ./gradlew downloadRepos
-                        ./gradlew installDist
+                        ./gradlew installDist --gradle-version=8.5
                     """
                 }
             }
