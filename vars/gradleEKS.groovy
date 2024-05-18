@@ -13,6 +13,9 @@ def call(Map configMap){
         // environment{
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
+        // tools {
+        //     gradle 'gradle-tool' 
+        // }
         environment{
             nexusURL = '172.31.74.236:8081'
         }
@@ -37,17 +40,7 @@ def call(Map configMap){
                     }
                 }   
             }
-        }
-        stage('Build application') {
-            steps {
-                sh """
-                    chmod +x gradlew
-                    ./gradlew downloadRepos
-                    ./gradlew installDist
-                """
-            }
-        }
-            
+        }   
         stage('Unit testing') {
                 steps {
                     sh """
@@ -59,6 +52,15 @@ def call(Map configMap){
             steps {
                 sh """
                     echo "sonar-scanner"
+                """
+            }
+        }
+        stage('Build application') {
+            steps {
+                sh """
+                    chmod +x gradlew
+                    ./gradlew downloadRepos
+                    ./gradlew installDist
                 """
             }
         }
