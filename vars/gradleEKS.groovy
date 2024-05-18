@@ -34,8 +34,8 @@ def call(Map configMap){
                         sh "echo Project in version value: $version_value"
                         def version = version_value.split(/=/)[1]
                         sh "echo final version: $version"
-                        // def packageVersion = readFile 'build.gradle'
-                        // cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
+                        // def fileContents = readFile 'build.gradle'
+                        // def packageVersion = fileContentscat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
                         // echo "Application version: $packageVersion"                    
                     }
                 }   
@@ -44,7 +44,7 @@ def call(Map configMap){
         stage('Install Dependencies') {
             steps {
                 sh """
-                    go build -o ${configMap.component}
+                    echo "install dependencied"
                 """
             }
         }
@@ -59,41 +59,10 @@ def call(Map configMap){
         stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
             steps {
                 sh """
-                    "sonar-scanner"
+                    echo "sonar-scanner"
                 """
             }
         }
-
-        // stage("SonarQube Code Analysis"){
-        //     steps{
-        //         withSonarQubeEnv("Sonar-scanner"){
-        //             sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=${configMap.component} -Dsonar.projectKey=${configMap.component}"
-        //         }
-        //     }
-        // }
-
-        // stage("OWASP Dependency Check"){
-        //     steps{
-        //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
-        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
-    
-        // stage("SonarQube Code Quality Gates"){
-        //     steps{
-        //         timeout(time: 5, unit: "MINUTES"){
-        //             waitForQualityGate abortPipeline: false
-        //         }
-        //     }
-        // }
-            
-            // stage("Trivy filesystem Scan"){
-            //     steps{
-            //         sh "trivy fs --format table -o trivy-fs-report.html ."
-            //     }
-            // }
-
-
         stage('Build') {
             steps {
                 sh """
@@ -105,50 +74,46 @@ def call(Map configMap){
                 """
             }
         }
-            stage('Publish Artifact') { // nexus artifact uploader plugin
-                steps {
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: "${nexusURL}",
-                        //nexusUrl: '172.31.74.236:8081',
-                        //nexusURL: pipelineGlobals.nexusURL(),
-                        groupId: 'com.hipstershop',
-                        //version: '1.0.0',
-                        version: "${packageVersion}",
-                        repository: "${configMap.component}",
-                        credentialsId: 'nexus-auth', // store nexus credentials
-                        artifacts: [
-                            [artifactId: "${configMap.component}",
-                            classifier: '',
-                            file: "${configMap.component}.zip",
-                            type: 'zip']
-                        ]
-                    )
+        stage('Publish Artifact') { // nexus artifact uploader plugin
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusURL}",
+                    //nexusUrl: '172.31.74.236:8081',
+                    //nexusURL: pipelineGlobals.nexusURL(),
+                    groupId: 'com.hipstershop',
+                    //version: '1.0.0',
+                    version: "${packageVersion}",
+                    repository: "${configMap.component}",
+                    credentialsId: 'nexus-auth', // store nexus credentials
+                    artifacts: [
+                        [artifactId: "${configMap.component}",
+                        classifier: '',
+                        file: "${configMap.component}.zip",
+                        type: 'zip']
+                    ]
+                )
+            }
+        }
+        stage('Deploy') {
+            when {
+                expression {
+                    params.Deploy
                 }
             }
-            stage('Deploy') {
-                when {
-                    expression {
-                        params.Deploy
-                    }
+            steps {
+                script {
+                    def params = [
+                        string(name: 'version', value:"$packageVersion"),
+                        string(name: 'environment', value:"dev")
+                        // booleanParam(name: 'create', value: "${params.Deploy}")
+                    ]
+                    build job: "../${configMap.component}-deploy", wait: true, parameters: params
+                    
                 }
-                steps {
-                    script {
-                        def params = [
-                            string(name: 'version', value:"$packageVersion"),
-                            string(name: 'environment', value:"dev")
-                            // booleanParam(name: 'create', value: "${params.Deploy}")
-                        ]
-                        build job: "../${configMap.component}-deploy", wait: true, parameters: params
-                        
-                    }
-                }
-            }       
-
-
-        
-
+            }
+        }       
         post { 
             always { 
                 echo 'I will always say Hello again!'
