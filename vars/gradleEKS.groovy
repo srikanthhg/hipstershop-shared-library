@@ -55,15 +55,15 @@ def call(Map configMap){
                 """
             }
         }
-        stage('Build application') {
-            steps {
-                sh """
-                    chmod +x gradlew
-                    ./gradlew downloadRepos
-                    ./gradlew installDist
-                """
-            }
-        }
+        // stage('Build application') {
+        //     steps {
+        //         sh """
+        //             chmod +x gradlew
+        //             ./gradlew downloadRepos
+        //             ./gradlew installDist
+        //         """
+        //     }
+        // }
         stage('Build') {
             steps {
                 sh """
