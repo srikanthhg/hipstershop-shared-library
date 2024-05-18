@@ -41,61 +41,61 @@ def call(Map configMap){
                 }   
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                sh """
-                    echo "install dependencied"
-                """
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh """
+        //             echo "install dependencied"
+        //         """
+        //     }
+        // }
             
-        stage('Unit testing') {
-                steps {
-                    sh """
-                        echo "unit tests will run here" 
-                    """
-                }
-            }
-        stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
-            steps {
-                sh """
-                    echo "sonar-scanner"
-                """
-            }
-        }
-        stage('Build') {
-            steps {
-                sh """
-                    ls -ltr
-                    zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
-                    ls -ltr
+        // stage('Unit testing') {
+        //         steps {
+        //             sh """
+        //                 echo "unit tests will run here" 
+        //             """
+        //         }
+        //     }
+        // stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+        //     steps {
+        //         sh """
+        //             echo "sonar-scanner"
+        //         """
+        //     }
+        // }
+        // stage('Build') {
+        //     steps {
+        //         sh """
+        //             ls -ltr
+        //             zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
+        //             ls -ltr
                     
                 
-                """
-            }
-        }
-        stage('Publish Artifact') { // nexus artifact uploader plugin
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: "${nexusURL}",
-                    //nexusUrl: '172.31.74.236:8081',
-                    //nexusURL: pipelineGlobals.nexusURL(),
-                    groupId: 'com.hipstershop',
-                    //version: '1.0.0',
-                    version: "${packageVersion}",
-                    repository: "${configMap.component}",
-                    credentialsId: 'nexus-auth', // store nexus credentials
-                    artifacts: [
-                        [artifactId: "${configMap.component}",
-                        classifier: '',
-                        file: "${configMap.component}.zip",
-                        type: 'zip']
-                    ]
-                )
-            }
-        }
+        //         """
+        //     }
+        // }
+        // stage('Publish Artifact') { // nexus artifact uploader plugin
+        //     steps {
+        //         nexusArtifactUploader(
+        //             nexusVersion: 'nexus3',
+        //             protocol: 'http',
+        //             nexusUrl: "${nexusURL}",
+        //             //nexusUrl: '172.31.74.236:8081',
+        //             //nexusURL: pipelineGlobals.nexusURL(),
+        //             groupId: 'com.hipstershop',
+        //             //version: '1.0.0',
+        //             version: "${packageVersion}",
+        //             repository: "${configMap.component}",
+        //             credentialsId: 'nexus-auth', // store nexus credentials
+        //             artifacts: [
+        //                 [artifactId: "${configMap.component}",
+        //                 classifier: '',
+        //                 file: "${configMap.component}.zip",
+        //                 type: 'zip']
+        //             ]
+        //         )
+        //     }
+        // }
         stage('Deploy') {
             when {
                 expression {
