@@ -40,39 +40,39 @@ def call(Map configMap){
                     }
                 }   
             }
-        }   
-        stage('Unit testing') {
+          
+            stage('Unit testing') {
+                    steps {
+                        sh """
+                            echo "unit tests will run here" 
+                        """
+                    }
+                }
+            stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
                 steps {
                     sh """
-                        echo "unit tests will run here" 
+                        echo "sonar-scanner"
                     """
                 }
             }
-        stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
-            steps {
-                sh """
-                    echo "sonar-scanner"
-                """
+            stage('Build application') {
+                steps {
+                    sh """
+                        chmod +x gradlew
+                        ./gradlew downloadRepos
+                        ./gradlew installDist
+                    """
+                }
             }
-        }
-        // stage('Build application') {
-        //     steps {
-        //         sh """
-        //             chmod +x gradlew
-        //             ./gradlew downloadRepos
-        //             ./gradlew installDist
-        //         """
-        //     }
-        // }
-        stage('Build') {
-            steps {
-                sh """
-                    ls -ltr
-                    zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
-                    ls -ltr
-                """
+            stage('Build') {
+                steps {
+                    sh """
+                        ls -ltr
+                        zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
+                        ls -ltr
+                    """
+                }
             }
-        }
         // stage('Publish Artifact') { // nexus artifact uploader plugin
         //     steps {
         //         nexusArtifactUploader(
@@ -112,7 +112,8 @@ def call(Map configMap){
                     
         //         }
         //     }
-        // }       
+        // }  
+        }     
         post { 
             always { 
                 echo 'I will always say Hello again!'
