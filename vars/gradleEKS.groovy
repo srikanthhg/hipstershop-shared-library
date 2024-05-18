@@ -30,17 +30,8 @@ def call(Map configMap){
             stage('Get the version') {
                 steps { 
                     script{
-                        def fileContents = readFile 'main.go' // Read the content of main.go
-                        // Extract the application version from the file content
-                        def packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
-                        // Check if the version is found
-                        if (packageVersion) {
-                            // Access the captured version group (group 1)
-                            packageVersion = packageVersion[0][1]
-                            echo "Application version: $packageVersion"
-                        } else {
-                            error "Application version not found in main.go"
-                        }                        
+                        def packageVersion = cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
+                        sh "Application version: $packageVersion"                    
                     }   
                 }
             }
