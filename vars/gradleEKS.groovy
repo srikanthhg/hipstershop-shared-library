@@ -30,14 +30,14 @@ def call(Map configMap){
             stage('Get the version') {
                 steps { 
                     script{
-                        // def version_value = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
-                        // sh "echo Project in version value: $version_value"
-                        // def version = version_value.split(/=/)[1]
-                        // sh "echo final version: $version"
-                        def fileContents = readFile 'build.gradle'
-                        def packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
-                        //cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
-                        echo "Application version: $packageVersion"                    
+                        def version_value = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
+                        sh "echo Project in version value: $version_value"
+                        def version = version_value.split(/=/)[1]
+                        sh "echo final version: $version"
+                        // def fileContents = readFile 'build.gradle'
+                        // def packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
+                        // //cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
+                        // echo "Application version: $packageVersion"                    
                     }
                 }   
             }
