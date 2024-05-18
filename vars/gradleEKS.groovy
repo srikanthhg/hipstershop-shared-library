@@ -33,48 +33,44 @@ def call(Map configMap){
                         def version = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
                         sh "echo Project in version value: $version"
                         def packageVersion = version.split(/=/)[1]
-                        sh "echo Application version: $packageVersion"
-                        // def fileContents = readFile 'build.gradle'
-                        // def packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
-                        // //cat build.gradle | grep -o 'version = [^,]*' | cut -d '"' -f2
-                        // echo "Application version: $packageVersion"                    
+                        sh "echo Application version: $packageVersion"                   
                     }
                 }   
             }
         }
-        // stage('Install Dependencies') {
-        //     steps {
-        //         sh """
-        //             echo "install dependencied"
-        //         """
-        //     }
-        // }
+        stage('Build application') {
+            steps {
+                sh """
+                    chmod +x gradlew
+                    ./gradlew downloadRepos
+                    ./gradlew installDist
+                """
+            }
+        }
             
-        // stage('Unit testing') {
-        //         steps {
-        //             sh """
-        //                 echo "unit tests will run here" 
-        //             """
-        //         }
-        //     }
-        // stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
-        //     steps {
-        //         sh """
-        //             echo "sonar-scanner"
-        //         """
-        //     }
-        // }
-        // stage('Build') {
-        //     steps {
-        //         sh """
-        //             ls -ltr
-        //             zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
-        //             ls -ltr
-                    
-                
-        //         """
-        //     }
-        // }
+        stage('Unit testing') {
+                steps {
+                    sh """
+                        echo "unit tests will run here" 
+                    """
+                }
+            }
+        stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
+            steps {
+                sh """
+                    echo "sonar-scanner"
+                """
+            }
+        }
+        stage('Build') {
+            steps {
+                sh """
+                    ls -ltr
+                    zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
+                    ls -ltr
+                """
+            }
+        }
         // stage('Publish Artifact') { // nexus artifact uploader plugin
         //     steps {
         //         nexusArtifactUploader(
