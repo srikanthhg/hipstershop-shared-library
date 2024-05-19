@@ -15,6 +15,7 @@ def call(Map configMap){
         // }
         tools {
             //gradle 'gradle-tool'
+            //When you run these commands using ./gradlew, you are using the Gradle Wrapper (gradlew), which is a script that allows you to run Gradle tasks without needing to have Gradle installed globally on your system. The wrapper script ensures that the version of Gradle specified in your project is used, making your build more reproducible across different environments.
             jdk 'javarun' // temurin plugin installed
         }
         environment{
@@ -71,6 +72,7 @@ def call(Map configMap){
                         ls -ltr
                         jar cf ${configMap.component}.jar ./build/install/hipstershop/lib/*
                         ls -ltr
+                        jar tf ${configMap.component}.jar
                         
                     
                     """
