@@ -70,7 +70,7 @@ def call(Map configMap){
                 steps {
                     sh """
                         ls -ltr
-                        jar cf ${configMap.component}.jar build/install/hipstershop/lib/*
+                        jar cf ${configMap.component}.jar ./build
                         ls -ltr
                         jar tf ${configMap.component}.jar
                         
@@ -78,28 +78,28 @@ def call(Map configMap){
                     """
                 }
             }
-        // stage('Publish Artifact') { // nexus artifact uploader plugin ./gradlew installDist --warning-mode all
-        //     steps {
-        //         nexusArtifactUploader(
-        //             nexusVersion: 'nexus3',
-        //             protocol: 'http',
-        //             nexusUrl: "${nexusURL}",
-        //             //nexusUrl: '172.31.74.236:8081',
-        //             //nexusURL: pipelineGlobals.nexusURL(),
-        //             groupId: 'com.hipstershop',
-        //             //version: '1.0.0',
-        //             version: "${packageVersion}",
-        //             repository: "${configMap.component}",
-        //             credentialsId: 'nexus-auth', // store nexus credentials
-        //             artifacts: [
-        //                 [artifactId: "${configMap.component}",
-        //                 classifier: '',
-        //                 file: "${configMap.component}-.jar",
-        //                 type: 'jar']
-        //             ]
-        //         )
-        //     }
-        // }
+        stage('Publish Artifact') { // nexus artifact uploader plugin
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusURL}",
+                    //nexusUrl: '172.31.74.236:8081',
+                    //nexusURL: pipelineGlobals.nexusURL(),
+                    groupId: 'com.hipstershop',
+                    //version: '1.0.0',
+                    version: "${packageVersion}",
+                    repository: "${configMap.component}",
+                    credentialsId: 'nexus-auth', // store nexus credentials
+                    artifacts: [
+                        [artifactId: "${configMap.component}",
+                        classifier: '',
+                        file: "${configMap.component}.jar",
+                        type: 'jar']
+                    ]
+                )
+            }
+        }
         // stage('Deploy') {
         //     when {
         //         expression {
