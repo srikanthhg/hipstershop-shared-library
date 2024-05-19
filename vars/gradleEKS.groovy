@@ -1,18 +1,10 @@
 def call(Map configMap){    
     pipeline {
         agent any
-        // {
-        //     node{
-        //         label 'GO-AGENT'
-        //     }
-        // }
-        // environment { 
-        //     packageVersion = ''
+        environment { 
+            packageVersion = ''
                 
-        // }
-        // environment{
-        //     SONAR_HOME= tool "Sonar-scanner"
-        // }
+        }
         tools {
             //gradle 'gradle-tool'
             //When you run these commands using ./gradlew, you are using the Gradle Wrapper (gradlew), which is a script that allows you to run Gradle tasks without needing to have Gradle installed globally on your system. The wrapper script ensures that the version of Gradle specified in your project is used, making your build more reproducible across different environments.
@@ -37,7 +29,7 @@ def call(Map configMap){
                     script{
                         def version = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
                         sh "echo Project in version value: $version"
-                        def packageVersion = version.split(/=/)[1]
+                        packageVersion = version.split(/=/)[1]
                         sh "echo Application version: $packageVersion"                   
                     }
                 }   
@@ -63,7 +55,6 @@ def call(Map configMap){
                         chmod +x gradlew
                         ./gradlew downloadRepos
                         ./gradlew installDist
-                        ./gradlew publish
                     """
                 }
             }
@@ -71,7 +62,7 @@ def call(Map configMap){
                 steps {
                     sh """
                         ls -ltr
-                        jar cf ${configMap.component}.jar ./build/install/hipstershop/*
+                        jar cf ${configMap.component}.jar ./build
                         ls -ltr
                         jar tf ${configMap.component}.jar
                         
