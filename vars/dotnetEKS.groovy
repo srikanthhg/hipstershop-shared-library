@@ -6,9 +6,7 @@ def call(Map configMap){
             nexusURL = '172.31.74.236:8081'
         }
         tools {
-            //gradle 'gradle-tool'
-            //When you run these commands using ./gradlew, you are using the Gradle Wrapper (gradlew), which is a script that allows you to run Gradle tasks without needing to have Gradle installed globally on your system. The wrapper script ensures that the version of Gradle specified in your project is used, making your build more reproducible across different environments.
-            jdk 'javarun' // temurin plugin installed
+         
         }
         options {
             timeout(time: 1, unit: 'HOURS')
@@ -23,10 +21,17 @@ def call(Map configMap){
             stage('Get the version') {
                 steps { 
                     script{
-                        def version = sh(returnStdout: true, script: "cat build.gradle | grep -o 'version = [^,]*'").trim()
-                        sh "echo Project in version value: $version"
-                        packageVersion = version.split(/=/)[1]
-                        sh "echo Application version: $packageVersion"                   
+                        def csprojFile = readFile "${configMap.component}/src/${configMap.component}.csproj"
+                        def versionRegex = /<Version>(.*?)<\/Version>/
+                        def match = (csprojFile =~ versionRegex)
+                    
+                        if (match) {
+                            def version = match[0][1]
+                            echo "packageVersion: ${version}"
+                            // You can use the 'version' variable for further processing
+                        } else {
+                            error "Failed to extract version from .csproj file"
+                        }              
                     }
                 }   
             }
@@ -48,9 +53,7 @@ def call(Map configMap){
             stage('Build application') {
                 steps {
                     sh """
-                        chmod +x gradlew
-                        ./gradlew downloadRepos
-                        ./gradlew installDist
+                       
                     """
                 }
             }
@@ -58,8 +61,9 @@ def call(Map configMap){
                 steps {
                     sh """
                         ls -ltr
-                        zip -q -r ${configMap.component}.zip ./build
+                        zip -q -r ${configMap.component}.jar ./build
                         ls -ltr
+                    
                     """
                 }
             }

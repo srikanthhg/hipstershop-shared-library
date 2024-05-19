@@ -103,7 +103,6 @@ def call(Map configMap){
                         ls -ltr
                         zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
-                        
                     
                     """
                 }
