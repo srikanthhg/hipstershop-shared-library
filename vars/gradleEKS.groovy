@@ -65,6 +65,17 @@ def call(Map configMap){
                     """
                 }
             }
+            stage('Build') {
+                steps {
+                    sh """
+                        ls -ltr
+                        jar cf ${configMap.component}.jar ./build/install/hipstershop/lib/*
+                        ls -ltr
+                        
+                    
+                    """
+                }
+            }
         // stage('Publish Artifact') { // nexus artifact uploader plugin ./gradlew installDist --warning-mode all
         //     steps {
         //         nexusArtifactUploader(
@@ -81,8 +92,8 @@ def call(Map configMap){
         //             artifacts: [
         //                 [artifactId: "${configMap.component}",
         //                 classifier: '',
-        //                 file: "${configMap.component}.zip",
-        //                 type: 'zip']
+        //                 file: "${configMap.component}-.jar",
+        //                 type: 'jar']
         //             ]
         //         )
         //     }
