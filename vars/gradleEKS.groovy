@@ -60,11 +60,11 @@ def call(Map configMap){
                     sh """
                         chmod +x gradlew
                         ./gradlew downloadRepos
-                         gradle clean build
+                        ./gradlew installDist --warning-mode all
                     """
                 }
             }
-        // stage('Publish Artifact') { // nexus artifact uploader plugin ./gradlew installDist --warning-mode all
+        // stage('Publish Artifact') { // nexus artifact uploader plugin 
         //     steps {
         //         nexusArtifactUploader(
         //             nexusVersion: 'nexus3',
