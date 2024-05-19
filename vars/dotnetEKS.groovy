@@ -50,9 +50,20 @@ def call(Map configMap){
                     """
                 }
             }
-            stage('Build application') {
+            stage('Install dependencies') {
                 steps {
                     sh """
+                    dotnet restore cartservice.csproj \
+                        -r linux-musl-x64
+                    dotnet publish cartservice.csproj \
+                        -p:PublishSingleFile=true \
+                        -r linux-musl-x64 \
+                        --self-contained true \
+                        -p:PublishTrimmed=True \
+                        -p:TrimMode=Full \
+                        -c release \
+                        -o /cartservice \
+                        --no-restore
                        
                     """
                 }
