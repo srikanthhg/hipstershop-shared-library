@@ -14,7 +14,7 @@ def call(Map configMap){
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
         tools {
-            gradle 'gradle-tool'
+            //gradle 'gradle-tool'
             jdk 'javarun'
         }
         environment{
@@ -61,7 +61,7 @@ def call(Map configMap){
                     sh """
                         chmod +x gradlew
                         ./gradlew downloadRepos
-                        ./gradlew installDist --warning-mode all
+                        ./gradlew installDist
                     """
                 }
             }
@@ -109,7 +109,7 @@ def call(Map configMap){
         post { 
             always { 
                 echo 'I will always say Hello again!'
-                deleteDir()
+                //deleteDir()
             }
             failure { 
                 echo 'this runs when pipeline is failed, used generally to send some alerts'
