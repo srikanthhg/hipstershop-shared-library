@@ -15,6 +15,7 @@ def call(Map configMap){
         // }
         tools {
             gradle 'gradle-tool'
+            java 'javarun'
         }
         environment{
             nexusURL = '172.31.74.236:8081'
