@@ -70,7 +70,7 @@ def call(Map configMap){
                 steps {
                     sh """
                         ls -ltr
-                        jar cf ${configMap.component}.jar ./build/install/hipstershop/lib/*
+                        jar cf ${configMap.component}.jar build/install/hipstershop/lib/*
                         ls -ltr
                         jar tf ${configMap.component}.jar
                         
