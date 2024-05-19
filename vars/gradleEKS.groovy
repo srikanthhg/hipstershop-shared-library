@@ -61,7 +61,7 @@ def call(Map configMap){
                     sh """
                         chmod +x gradlew
                         ./gradlew downloadRepos
-                        gradle clean build
+                        ./gradlew installDist --warning-mode all
                     """
                 }
             }
