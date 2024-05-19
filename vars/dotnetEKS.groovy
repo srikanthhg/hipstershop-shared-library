@@ -5,9 +5,9 @@ def call(Map configMap){
             packageVersion = ''    
             nexusURL = '172.31.74.236:8081'
         }
-        tools {
-            mabuild 'dotnetapp'
-        }
+        // tools {
+        //     mabuild 'dotnetapp'
+        // }
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
