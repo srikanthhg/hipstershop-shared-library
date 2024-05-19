@@ -15,7 +15,7 @@ def call(Map configMap){
         // }
         tools {
             //gradle 'gradle-tool'
-            jdk 'javarun'
+            jdk 'javarun' // temurin plugin installed
         }
         environment{
             nexusURL = '172.31.74.236:8081'
