@@ -13,9 +13,9 @@ def call(Map configMap){
         // environment{
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
-        // tools {
-        //     gradle 'gradle-tool'
-        // }
+        tools {
+            gradle 'gradle-tool'
+        }
         environment{
             nexusURL = '172.31.74.236:8081'
         }
@@ -60,11 +60,11 @@ def call(Map configMap){
                     sh """
                         chmod +x gradlew
                         ./gradlew downloadRepos
-                        ./gradlew installDist --warning-mode all
+                        gradle clean build
                     """
                 }
             }
-        // stage('Publish Artifact') { // nexus artifact uploader plugin 
+        // stage('Publish Artifact') { // nexus artifact uploader plugin ./gradlew installDist --warning-mode all
         //     steps {
         //         nexusArtifactUploader(
         //             nexusVersion: 'nexus3',
