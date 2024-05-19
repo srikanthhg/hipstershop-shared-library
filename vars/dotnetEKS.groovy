@@ -21,7 +21,7 @@ def call(Map configMap){
             stage('Get the version') {
                 steps { 
                     script{
-                        def csprojFile = readFile "${configMap.component}/src/${configMap.component}.csproj"
+                        def csprojFile = readFile 'cartservice/src/cartservice.csproj'
                         def versionRegex = /<Version>(.*?)<\/Version>/
                         def match = (csprojFile =~ versionRegex)
                     
