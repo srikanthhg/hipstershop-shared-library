@@ -9,7 +9,7 @@ def call(Map configMap){
         //     msbuild 'dotnetapp'
         // }
         tools {
-            dotnetsdk 'dotnetapp'
+            dotnetsdk 'dotnetapp' // Installed plugin .NET SDK Support Version 
         }
         options {
             timeout(time: 1, unit: 'HOURS')
@@ -162,7 +162,7 @@ def call(Map configMap){
         post { 
             always { 
                 echo 'I will always say Hello again!'
-                deleteDir()
+                //deleteDir()
             }
             failure { 
                 echo 'this runs when pipeline is failed, used generally to send some alerts'
