@@ -9,7 +9,7 @@ def call(Map configMap){
         //     msbuild 'dotnetapp'
         // }
         tools {
-            dotnet 'dotnetapp'
+            dotnetsdk 'dotnetapp'
         }
         options {
             timeout(time: 1, unit: 'HOURS')
