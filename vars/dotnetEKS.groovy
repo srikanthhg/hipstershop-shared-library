@@ -5,9 +5,9 @@ def call(Map configMap){
             packageVersion = ''    
             nexusURL = '172.31.74.236:8081'
         }
-        // tools {
-        //     mabuild 'dotnetapp'
-        // }
+        tools {
+            msbuild 'dotnetapp'
+        }
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
@@ -50,34 +50,71 @@ def call(Map configMap){
                     """
                 }
             }
-            stage('Install dependencies') {
+
+            stage('Restore') {
                 steps {
-                    sh """
-                    dotnet restore cartservice.csproj \
-                        -r linux-musl-x64
-                    dotnet publish cartservice.csproj \
-                        -p:PublishSingleFile=true \
-                        -r linux-musl-x64 \
-                        --self-contained true \
-                        -p:PublishTrimmed=True \
-                        -p:TrimMode=Full \
-                        -c release \
-                        -o /cartservice \
-                        --no-restore
-                       
-                    """
+                    script {
+                        def dotnetCmd = "dotnet restore"
+                        sh "${dotnetCmd}"
+                    }
                 }
             }
+        
             stage('Build') {
                 steps {
-                    sh """
-                        ls -ltr
-                        zip -q -r ${configMap.component}.jar ./build
-                        ls -ltr
-                    
-                    """
+                    script {
+                        def dotnetCmd = "dotnet build"
+                        sh "${dotnetCmd}"
+                    }
                 }
             }
+        
+            stage('Test') {
+                steps {
+                    script {
+                        def dotnetCmd = "dotnet test"
+                        sh "${dotnetCmd}"
+                    }
+                }
+            }
+        
+            stage('Publish') {
+                steps {
+                    script {
+                        def dotnetCmd = "dotnet publish -c Release -o ./publish"
+                        sh "${dotnetCmd}"
+                    }
+                    archiveArtifacts artifacts: '**/publish/*.dll', fingerprint: true
+                }
+            }
+            // stage('Install dependencies') {
+            //     steps {
+            //         sh """
+            //         dotnet restore cartservice.csproj \
+            //             -r linux-musl-x64
+            //         dotnet publish cartservice.csproj \
+            //             -p:PublishSingleFile=true \
+            //             -r linux-musl-x64 \
+            //             --self-contained true \
+            //             -p:PublishTrimmed=True \
+            //             -p:TrimMode=Full \
+            //             -c release \
+            //             -o /cartservice \
+            //             --no-restore
+                       
+            //         """
+            //     }
+            // }
+            // stage('Build') {
+            //     steps {
+            //         sh """
+            //             ls -ltr
+            //             zip -q -r ${configMap.component}.jar ./build
+            //             ls -ltr
+                    
+            //         """
+            //     }
+            // }
         // stage('Publish Artifact') { // nexus artifact uploader plugin
         //     steps {
         //         nexusArtifactUploader(
