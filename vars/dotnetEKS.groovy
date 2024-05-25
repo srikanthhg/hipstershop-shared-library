@@ -90,7 +90,7 @@ def call(Map configMap){
                     archiveArtifacts artifacts: '**/cartservice/*.dll', fingerprint: true
                 }
             }
-            stage('Build') {
+            stage('Buildd') {
                 steps {
                     sh """
                         ls -ltr
