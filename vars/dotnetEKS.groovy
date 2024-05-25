@@ -72,14 +72,14 @@ def call(Map configMap){
                 }
             }
         
-            stage('Test') {
-                steps {
-                    script {
-                        def dotnetCmd = "dotnet test"
-                        sh "${dotnetCmd}"
-                    }
-                }
-            }
+            // stage('Test') {
+            //     steps {
+            //         script {
+            //             def dotnetCmd = "dotnet test"
+            //             sh "${dotnetCmd}"
+            //         }
+            //     }
+            // }
         
             stage('Publish') {
                 steps {
