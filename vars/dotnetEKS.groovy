@@ -90,34 +90,16 @@ def call(Map configMap){
                     archiveArtifacts artifacts: '**/cartservice/*.dll', fingerprint: true
                 }
             }
-            // stage('Install dependencies') {
-            //     steps {
-            //         sh """
-            //         dotnet restore cartservice.csproj \
-            //             -r linux-musl-x64
-            //         dotnet publish cartservice.csproj \
-            //             -p:PublishSingleFile=true \
-            //             -r linux-musl-x64 \
-            //             --self-contained true \
-            //             -p:PublishTrimmed=True \
-            //             -p:TrimMode=Full \
-            //             -c release \
-            //             -o /cartservice \
-            //             --no-restore
-                       
-            //         """
-            //     }
-            // }
-            // stage('Build') {
-            //     steps {
-            //         sh """
-            //             ls -ltr
-            //             zip -q -r ${configMap.component}.jar ./build
-            //             ls -ltr
+            stage('Build') {
+                steps {
+                    sh """
+                        ls -ltr
+                        zip -q -r ${configMap.component}.zip ./${configMap.component} -x ".git" -x "*.zip"
+                        ls -ltr
                     
-            //         """
-            //     }
-            // }
+                    """
+                }
+            }
         // stage('Publish Artifact') { // nexus artifact uploader plugin
         //     steps {
         //         nexusArtifactUploader(
