@@ -84,7 +84,7 @@ def call(Map configMap){
             stage('Publish') {
                 steps {
                     script {
-                        def dotnetCmd = "dotnet publish -c Release -o ./publish"
+                        def dotnetCmd = "dotnet publish -c Release -o ./publish/src/cartservice"
                         sh "${dotnetCmd}"
                     }
                     archiveArtifacts artifacts: '**/publish/*.dll', fingerprint: true
@@ -162,7 +162,7 @@ def call(Map configMap){
         post { 
             always { 
                 echo 'I will always say Hello again!'
-                //deleteDir()
+                deleteDir()
             }
             failure { 
                 echo 'this runs when pipeline is failed, used generally to send some alerts'
