@@ -5,8 +5,11 @@ def call(Map configMap){
             packageVersion = ''    
             nexusURL = '172.31.74.236:8081'
         }
+        // tools {
+        //     msbuild 'dotnetapp'
+        // }
         tools {
-            msbuild 'dotnetapp'
+            dotnet 'dotnetapp'
         }
         options {
             timeout(time: 1, unit: 'HOURS')
