@@ -84,8 +84,7 @@ def call(Map configMap){
             stage('Publish') {
                 steps {
                     script {
-                        //def dotnetCmd = "dotnet publish -c Release -o ./publish/src/cartservice"
-                        def dotnetCmd = "dotnet publish -c Release -o /cartservice"
+                        def dotnetCmd = "dotnet publish -c Release -o ./publish/src/cartservice"
                         sh "${dotnetCmd}"
                     }
                     archiveArtifacts artifacts: '**/publish/*.dll', fingerprint: true
