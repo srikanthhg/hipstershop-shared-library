@@ -87,7 +87,7 @@ def call(Map configMap){
                         def dotnetCmd = "dotnet publish -c Release -o ./publish/src/cartservice"
                         sh "${dotnetCmd}"
                     }
-                    archiveArtifacts artifacts: '**/publish/*.dll', fingerprint: true
+                    archiveArtifacts artifacts: '**/publish/src/cartservice/*.dll', fingerprint: true
                 }
             }
             // stage('Install dependencies') {
