@@ -4,10 +4,10 @@ def call(Map configMap){
         //{ node{ label 'NODE-1' }}
         
         environment{
-            packageVersion = ''
+        
             nexusURL = '172.31.71.176:8081'
         }
-        
+
         options {
             timeout(time: 1, unit: 'HOURS')
             disableConcurrentBuilds()
