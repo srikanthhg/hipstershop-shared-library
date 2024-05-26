@@ -14,12 +14,12 @@ def call(Map configMap){
         }
             
         stages{
-            stage('Clone code from GitHub'){
-                steps{
-                //git branch: 'main', url: 'https://github.com/srikanthhg/checkoutservice'
-                git url: 'https://github.com/srikanthhg/recommendationservice',  branch: 'main'
-                }
-            }
+            // stage('Clone code from GitHub'){
+            //     steps{
+            //     //git branch: 'main', url: 'https://github.com/srikanthhg/checkoutservice'
+            //     //git url: 'https://github.com/srikanthhg/recommendationservice',  branch: 'main'
+            //     }
+            // }
             stage('Get the version'){
                 steps{
                     script {
@@ -37,7 +37,7 @@ def call(Map configMap){
                 steps{
                     sh """
                     pip3.12 install -r requirements.txt
-                    python3.12 email_server.py build
+                    
                     """
                 }
             }
@@ -60,7 +60,7 @@ def call(Map configMap){
             stage('Build') {
                 steps {
                     sh """
-                        
+                        python3.12 email_server.py build
                         ls -ltr
                         zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
