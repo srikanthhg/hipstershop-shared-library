@@ -66,6 +66,37 @@ def call(Map configMap){
                     """
                 }
             }
+
+            // stage("SonarQube Code Analysis"){
+            //     steps{
+            //         withSonarQubeEnv("Sonar-scanner"){
+            //             sh "$SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=${configMap.component} -Dsonar.projectKey=${configMap.component}"
+            //         }
+            //     }
+            // }
+
+            // stage("OWASP Dependency Check"){
+            //     steps{
+            //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
+            //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            //     }
+            // }
+        
+            // stage("SonarQube Code Quality Gates"){
+            //     steps{
+            //         timeout(time: 5, unit: "MINUTES"){
+            //             waitForQualityGate abortPipeline: false
+            //         }
+            //     }
+            // }
+            
+            // stage("Trivy filesystem Scan"){
+            //     steps{
+            //         sh "trivy fs --format table -o trivy-fs-report.html ."
+            //     }
+            // }
+
+
             stage('Build') {
                 steps {
                     sh """
