@@ -37,6 +37,7 @@ def call(Map configMap){
                 steps{
                     sh """
                     pip3.12 install -r requirements.txt
+                    python email_server.py build
                     """
                 }
             }
@@ -59,7 +60,7 @@ def call(Map configMap){
             stage('Build') {
                 steps {
                     sh """
-                        python email_server.py build
+                        
                         ls -ltr
                         zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
