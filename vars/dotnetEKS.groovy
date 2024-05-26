@@ -96,7 +96,7 @@ def call(Map configMap){
                         ls -ltr
                         zip -q -r ${configMap.component}.zip ./${configMap.component}/* -x ".git" -x "*.zip"
                         ls -ltr
-                    
+                        unzip -l cartservice.zip 
                     """
                 }
             }
