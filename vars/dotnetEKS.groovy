@@ -29,7 +29,8 @@ def call(Map configMap){
                         def match = (csprojFile =~ versionRegex)
                     
                         if (match) {
-                            def packageversion = match[0][1]
+                            def version = match[0][1]
+                            packageVersion =  ${version}
                             echo "packageVersion: ${packageversion}"
                             // You can use the 'version' variable for further processing
                         } else {
