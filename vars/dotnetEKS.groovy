@@ -30,8 +30,8 @@ def call(Map configMap){
                     
                         if (match) {
                             def version = match[0][1]
-                            packageVersion =  ${version}
-                            echo "packageVersion: ${packageVersion}"
+                            
+                            echo "packageVersion: ${version}"
                             // You can use the 'version' variable for further processing
                         } else {
                             error "Failed to extract version from .csproj file"
