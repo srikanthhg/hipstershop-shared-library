@@ -3,7 +3,7 @@ def call(Map configMap){
         agent any
         environment { 
             packageVersion = ''    
-            nexusURL = '172.31.74.236:8081'
+            nexusURL = '172.31.71.176:8081'
         }
         tools {
             //gradle 'gradle-tool'
