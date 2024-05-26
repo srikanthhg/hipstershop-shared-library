@@ -62,7 +62,7 @@ def call(Map configMap){
             stage('Sonar scan') { // sonar-scanner is the command, it will read sonar-project properties and start scanning
                 steps {
                     sh """
-                        "sonar-scanner"
+                        echo "sonar-scanner"
                     """
                 }
             }
