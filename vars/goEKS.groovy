@@ -14,6 +14,7 @@ def call(Map configMap){
         //     SONAR_HOME= tool "Sonar-scanner"
         // }
         environment{
+            packageVersion = ''
             nexusURL = '172.31.71.176:8081'
         }
         
