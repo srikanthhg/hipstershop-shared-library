@@ -1,10 +1,7 @@
 def call(Map configMap){  
     pipeline{
-        agent{
-            node{
-                label 'NODE-1'
-            }
-        }
+        agent any
+        //{ node{ label 'NODE-1' }}
 
         options {
             timeout(time: 1, unit: 'HOURS')
