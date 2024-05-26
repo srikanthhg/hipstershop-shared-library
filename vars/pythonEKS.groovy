@@ -59,7 +59,7 @@ def call(Map configMap){
             stage('Build') {
                 steps {
                     sh """
-                        sh 'python email_server.py build'
+                        python email_server.py build
                         ls -ltr
                         zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
