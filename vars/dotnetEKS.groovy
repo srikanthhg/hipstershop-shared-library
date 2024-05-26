@@ -3,7 +3,7 @@ def call(Map configMap){
         agent any
         environment { 
             packageVersion = ''    
-            nexusURL = '172.31.74.236:8081'
+            nexusURL = '172.31.71.176:8081'
         }
         // tools {
         //     msbuild 'dotnetapp'
@@ -29,8 +29,8 @@ def call(Map configMap){
                         def match = (csprojFile =~ versionRegex)
                     
                         if (match) {
-                            def version = match[0][1]
-                            echo "packageVersion: ${version}"
+                            def packageversion = match[0][1]
+                            echo "packageVersion: ${packageversion}"
                             // You can use the 'version' variable for further processing
                         } else {
                             error "Failed to extract version from .csproj file"
@@ -116,8 +116,8 @@ def call(Map configMap){
                     artifacts: [
                         [artifactId: "${configMap.component}",
                         classifier: '',
-                        file: "${configMap.component}.jar",
-                        type: 'jar']
+                        file: "${configMap.component}.zip",
+                        type: 'zip']
                     ]
                 )
             }
