@@ -33,7 +33,7 @@ def call(Map configMap){
                     script{
                         def fileContents = readFile 'main.go' // Read the content of main.go
                         // Extract the application version from the file content
-                        def packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
+                        packageVersion = fileContents =~ /Version\s*=\s*"([^"]*)"/
                         // Check if the version is found
                         if (packageVersion) {
                             // Access the captured version group (group 1)
