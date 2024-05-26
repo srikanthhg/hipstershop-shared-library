@@ -52,7 +52,7 @@ def call(Map configMap){
             stage('Build') {
                 steps {
                     sh 'ls -ltr'
-                    sh "zip -r ${component}.zip ./* --exclude=.git --exclude=.zip"
+                    sh "zip -q -r ${component}.zip ./* --exclude=.git --exclude=.zip"
                 }
             }
             stage('SAST') {
