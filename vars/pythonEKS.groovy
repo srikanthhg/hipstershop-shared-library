@@ -37,7 +37,7 @@ def call(Map configMap){
                 steps{
                     sh """
                     pip3.12 install -r requirements.txt
-                    python email_server.py build
+                    python3.12 email_server.py build
                     """
                 }
             }
@@ -116,7 +116,7 @@ def call(Map configMap){
         post { 
             always { 
                 echo 'I will always say Hello again!'
-                deleteDir()
+                //deleteDir()
             }
             failure { 
                 echo 'this runs when pipeline is failed, used generally to send some alerts'
