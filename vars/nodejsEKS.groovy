@@ -8,6 +8,7 @@ def call(Map configMap){
         environment{
             //here if you create any variable you will have global access, since it is environment no need of def
             packageVersion = ''
+            nexusURL = '172.31.71.176:8081'
         }
         tools {
             nodejs 'mynodejs'
