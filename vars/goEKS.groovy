@@ -82,8 +82,8 @@ def call(Map configMap){
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        //nexusUrl: "${nexusURL}",
-                        nexusUrl: '172.31.71.176:8081',
+                        nexusUrl: "${nexusURL}",
+                        //nexusUrl: '172.31.71.176:8081',
                         //nexusURL: pipelineGlobals.nexusURL(),
                         groupId: 'com.hipstershop',
                         //version: '1.0.0',
