@@ -63,7 +63,7 @@ def call(Map configMap){
             }
             
             //install pipeline utility steps plugin, if not installed
-            /* stage('Publish Artifact') {
+            stage('Publish Artifact') {
                 steps {
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
@@ -81,7 +81,7 @@ def call(Map configMap){
                         ]
                     )
                 }
-            } */
+            }
 
             
         }
