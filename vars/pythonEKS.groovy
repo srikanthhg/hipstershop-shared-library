@@ -61,10 +61,8 @@ def call(Map configMap){
                 steps {
                     sh """
                         ls -ltr
-                        zip -q -r ${configMap.component}.zip . -x ".git" -x "*.zip"
+                        zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
-                        
-                    
                     """
                 }
             }
