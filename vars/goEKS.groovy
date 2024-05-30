@@ -19,6 +19,7 @@ def call(Map configMap){
         }
         tools {
             jfrog 'jfrog-cli'
+            go 'golang'
         }
         
         options {
