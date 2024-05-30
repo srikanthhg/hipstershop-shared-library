@@ -96,7 +96,7 @@ def call(Map configMap){
                 }
             }
 
-            stage('Publish build info') {
+            stage('Publish build infooo') {
                 steps {
                     rtUpload (
                         serverId: 'Artifactory-1',
