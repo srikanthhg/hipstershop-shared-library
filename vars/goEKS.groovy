@@ -17,6 +17,9 @@ def call(Map configMap){
             packageVersion = ''
             nexusURL = '172.31.71.176:8081'
         }
+        tools {
+            jfrog 'jfrog-cli'
+        }
         
         options {
             timeout(time: 1, unit: 'HOURS')
@@ -77,28 +80,33 @@ def call(Map configMap){
                     """
                 }
             }
-            stage('Publish Artifact') { // nexus artifact uploader plugin
+            stage('Publish build info') {
                 steps {
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: "${nexusURL}",
-                        //nexusUrl: '172.31.71.176:8081',
-                        //nexusURL: pipelineGlobals.nexusURL(),
-                        groupId: 'com.hipstershop',
-                        //version: '1.0.0',
-                        version: "${packageVersion}",
-                        repository: "${configMap.component}",
-                        credentialsId: 'nexus-auth', // store nexus credentials
-                        artifacts: [
-                            [artifactId: "${configMap.component}",
-                            classifier: '',
-                            file: "${configMap.component}.zip",
-                            type: 'zip']
-                        ]
-                    )
+                    jf 'rt build-publish'
                 }
             }
+            // stage('Publish Artifact') { // nexus artifact uploader plugin
+            //     steps {
+            //         nexusArtifactUploader(
+            //             nexusVersion: 'nexus3',
+            //             protocol: 'http',
+            //             nexusUrl: "${nexusURL}",
+            //             //nexusUrl: '172.31.71.176:8081',
+            //             //nexusURL: pipelineGlobals.nexusURL(),
+            //             groupId: 'com.hipstershop',
+            //             //version: '1.0.0',
+            //             version: "${packageVersion}",
+            //             repository: "${configMap.component}",
+            //             credentialsId: 'nexus-auth', // store nexus credentials
+            //             artifacts: [
+            //                 [artifactId: "${configMap.component}",
+            //                 classifier: '',
+            //                 file: "${configMap.component}.zip",
+            //                 type: 'zip']
+            //             ]
+            //         )
+            //     }
+            // }
             stage('Deploy') {
                 when {
                     expression {
