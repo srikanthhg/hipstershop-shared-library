@@ -103,12 +103,12 @@ def call(Map configMap){
                         spec: '''{
                             "files": [
                                 {
-                                "pattern": "bazinga/*froggy*.zip",
-                                "target": "bazinga-repo/froggy-files/"
+                                "pattern": "${configMap.component}.zip",
+                                "target": "."
                                 }
                             ]
                         }''',
-                        project: 'my-project-key'
+                        project: "${configMap.component}"
                     )
                 }
             }
