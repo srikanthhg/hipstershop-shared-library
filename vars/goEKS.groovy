@@ -83,7 +83,33 @@ def call(Map configMap){
             }
             stage('Publish build info') {
                 steps {
-                    jf 'rt build-publish'
+                    rtServer (
+                        id: 'Artifactory-1',
+                        url: 'http://http://3.95.245.212:8082/artifactory',
+                            credentialsId: 'jfrog-auth',
+                            // If Jenkins is configured to use an http proxy, you can bypass the proxy when using this Artifactory server:
+                            bypassProxy: true,
+                            // Configure the connection timeout (in seconds).
+                            // The default value (if not configured) is 300 seconds: 
+                            timeout: 300
+                    )
+                }
+            }
+
+            stage('Publish build info') {
+                steps {
+                    rtUpload (
+                        serverId: 'Artifactory-1',
+                        spec: '''{
+                            "files": [
+                                {
+                                "pattern": "bazinga/*froggy*.zip",
+                                "target": "bazinga-repo/froggy-files/"
+                                }
+                            ]
+                        }''',
+                        project: 'my-project-key'
+                    )
                 }
             }
             // stage('Publish Artifact') { // nexus artifact uploader plugin
