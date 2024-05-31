@@ -94,8 +94,8 @@ def call(Map configMap){
                         spec: '''{
                             "files": [
                                 {
-                                "pattern": "${configMap.component}.zip",
-                                "target": "${configMap.component}"
+                                "pattern": "frontend.zip",
+                                "target": "frontend"
                                 }
                             ]
                         }'''
