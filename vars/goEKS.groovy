@@ -98,7 +98,7 @@ def call(Map configMap){
                                 "target": "frontend"
                                 }
                             ]
-                        }''',
+                        }'''
                     )
                 }
             }
