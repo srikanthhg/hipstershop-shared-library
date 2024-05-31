@@ -88,7 +88,7 @@ def call(Map configMap){
                         url: 'http://http://3.95.245.212:8082/artifactory',
                         credentialsId: 'jfrog-auth',
                         bypassProxy: true
-                    ),
+                    )
                     rtUpload (
                         serverId: 'server-1',
                         spec: '''{
