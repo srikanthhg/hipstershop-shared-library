@@ -90,16 +90,21 @@ def call(Map configMap){
                         credentialsId: 'jfrog-auth',
                         //bypassProxy: true
                     )
-                    rtUpload (
-                        serverId: 'server-1',
-                        spec: '''{
-                            \"files\": [
+                    def pattern = "${configMap.component}.zip"
+                    def target = "${configMap.component}"
+                    def spec = """
+                        {
+                             "files": [
                                 {
-                                \"pattern\": '${configMap.component}.zip',
-                                \"target\": '${configMap.component}'
+                                    "pattern": '$pattern',
+                                    "target": '$target'
                                 }
                             ]
-                        }'''
+                        }
+                    """
+                    rtUpload (
+                        serverId: 'server-1',
+                        spec: spec
                     )
                 }
             }
