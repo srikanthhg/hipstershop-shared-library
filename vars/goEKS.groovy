@@ -84,25 +84,23 @@ def call(Map configMap){
             }
             stage('Publish build info') {
                 steps {
-                    script{
-                        rtServer (
-                        id: 'server-1',
-                        url: 'http://100.26.49.102:8082/artifactory',
-                        credentialsId: 'jfrog-auth',
-                        //bypassProxy: true
-                        )
-                        rtUpload (
-                        serverId: 'server-1',
-                        spec: '''{
-                            "files": [
-                                {
-                                "pattern": '${configMap.component}.zip',
-                                "target": '${configMap.component}'
-                                }
-                            ]
-                        }'''
-                        )
-                    }
+                    rtServer (
+                    id: 'server-1',
+                    url: 'http://100.26.49.102:8082/artifactory',
+                    credentialsId: 'jfrog-auth',
+                    //bypassProxy: true
+                    )
+                    rtUpload (
+                    serverId: 'server-1',
+                    spec: '''{
+                        "files": [
+                            {
+                            "pattern": '${configMap.component}.zip',
+                            "target": '${configMap.component}'
+                            }
+                        ]
+                    }'''
+                    )
                 }
             }
             // stage('Publish Artifact') { // nexus artifact uploader plugin
