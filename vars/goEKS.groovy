@@ -85,7 +85,7 @@ def call(Map configMap){
                 steps {
                     rtServer (
                         id: 'server-1',
-                        url: 'http://http://3.95.245.212:8082/artifactory',
+                        url: 'http://100.26.49.102:8082/artifactory',
                         credentialsId: 'jfrog-auth',
                         bypassProxy: true
                     )
