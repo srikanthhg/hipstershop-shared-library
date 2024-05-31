@@ -93,10 +93,10 @@ def call(Map configMap){
                     rtUpload (
                         serverId: 'server-1',
                         spec: '''{
-                            "files": [
+                            \"files\": [
                                 {
-                                "pattern": "frontend.zip",
-                                "target": "frontend"
+                                \"pattern\": '${configMap.component}.zip',
+                                \"target\": '${configMap.component}'
                                 }
                             ]
                         }'''
