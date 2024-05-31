@@ -90,22 +90,24 @@ def call(Map configMap){
                         credentialsId: 'jfrog-auth',
                         //bypassProxy: true
                     )
-                    def pattern = "${configMap.component}.zip"
-                    def target = "${configMap.component}"
-                    def spec = """
-                        {
-                             "files": [
-                                {
-                                    "pattern": '$pattern',
-                                    "target": '$target'
-                                }
-                            ]
-                        }
-                    """
-                    rtUpload (
-                        serverId: 'server-1',
-                        spec: spec
-                    )
+                    script{
+                        def pattern = "${configMap.component}.zip"
+                        def target = "${configMap.component}"
+                        def spec = """
+                            {
+                                "files": [
+                                    {
+                                        "pattern": '$pattern',
+                                        "target": '$target'
+                                    }
+                                ]
+                            }
+                        """
+                        rtUpload (
+                            serverId: 'server-1',
+                            spec: spec
+                        )
+                    }
                 }
             }
             // stage('Publish Artifact') { // nexus artifact uploader plugin
