@@ -84,31 +84,21 @@ def call(Map configMap){
             stage('Publish build info') {
                 steps {
                     rtServer (
-                        id: 'Artifactory-1',
+                        id: 'server-1',
                         url: 'http://http://3.95.245.212:8082/artifactory',
-                            credentialsId: 'jfrog-auth',
-                            // If Jenkins is configured to use an http proxy, you can bypass the proxy when using this Artifactory server:
-                            bypassProxy: true,
-                            // Configure the connection timeout (in seconds).
-                            // The default value (if not configured) is 300 seconds: 
-                            timeout: 300
-                    )
-                }
-            }
-
-            stage('Publish build infooo') {
-                steps {
+                        credentialsId: 'jfrog-auth',
+                        bypassProxy: true
+                    ),
                     rtUpload (
-                        serverId: 'Artifactory-1',
+                        serverId: 'server-1',
                         spec: '''{
                             "files": [
                                 {
                                 "pattern": "${configMap.component}.zip",
-                                "target": "."
+                                "target": "${configMap.component}"
                                 }
                             ]
-                        }''',
-                        project: "${configMap.component}"
+                        }'''
                     )
                 }
             }
