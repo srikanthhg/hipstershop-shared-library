@@ -29,6 +29,7 @@ def call(Map configMap){
         }
         parameters {
             booleanParam(name: 'Deploy', defaultValue: false, description: 'Toggle this value')
+            string(name: 'projectName', defaultValue: "${configMap.component}", description: 'Name of the project')
         }
 
         stages {
@@ -94,8 +95,8 @@ def call(Map configMap){
                         spec: '''{
                             "files": [
                                 {
-                                "pattern": '${configMap.component}.zip',
-                                "target": '${configMap.component}'
+                                "pattern": '${params.projectName}.zip',
+                                "target": '${params.projectName}'
                                 }
                             ]
                         }'''
