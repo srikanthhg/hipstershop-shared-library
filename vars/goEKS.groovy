@@ -95,8 +95,8 @@ def call(Map configMap){
                         spec: '''{
                             "files": [
                                 {
-                                "pattern": "${params.projectName}.zip",
-                                "target": "${params.projectName}"
+                                "pattern": "frontend.zip",
+                                "target": "frontend"
                                 }
                             ]
                         }'''
