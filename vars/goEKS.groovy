@@ -95,7 +95,7 @@ def call(Map configMap){
                             "files": [
                                 {
                                 "pattern": "frontend.zip",
-                                "target": "example-repo-local"
+                                "target": "frontend1"
                                 }
                             ]
                         }'''
