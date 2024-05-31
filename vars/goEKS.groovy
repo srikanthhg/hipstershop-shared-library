@@ -84,28 +84,23 @@ def call(Map configMap){
             }
             stage('Publish build info') {
                 steps {
-                    rtServer (
+                    script{
+                        rtServer (
                         id: 'server-1',
                         url: 'http://100.26.49.102:8082/artifactory',
                         credentialsId: 'jfrog-auth',
                         //bypassProxy: true
-                    )
-                    script{
-                        def pattern = "${configMap.component}.zip"
-                        def target = "${configMap.component}"
-                        def spec = """
-                            {
-                                "files": [
-                                    {
-                                        "pattern": '$pattern',
-                                        "target": '$target'
-                                    }
-                                ]
-                            }
-                        """
+                        )
                         rtUpload (
-                            serverId: 'server-1',
-                            spec: spec
+                        serverId: 'server-1',
+                        spec: '''{
+                            \"files\": [
+                                {
+                                \"pattern\": '${configMap.component}.zip',
+                                \"target\": '${configMap.component}'
+                                }
+                            ]
+                        }'''
                         )
                     }
                 }
