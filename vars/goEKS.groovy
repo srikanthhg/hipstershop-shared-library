@@ -84,27 +84,27 @@ def call(Map configMap){
                     """
                 }
             }
-            stage('Publish build info') { //jfrog Artifactory
-                steps {
-                    rtServer (
-                    id: 'server-1',
-                    url: 'http://100.26.49.102:8082/artifactory',
-                    credentialsId: 'jfrog-auth',
-                    //bypassProxy: true
-                    )
-                    rtUpload (
-                    serverId: 'server-1',
-                    spec: '''{
-                        "files": [
-                            {
-                            "pattern": "frontend.zip",
-                            "target": "frontend"
-                            }
-                        ]
-                    }'''
-                    )
-                }
-            }
+            // stage('Publish build info') { //jfrog Artifactory
+            //     steps {
+            //         rtServer (
+            //         id: 'server-1',
+            //         url: 'http://100.26.49.102:8082/artifactory',
+            //         credentialsId: 'jfrog-auth',
+            //         //bypassProxy: true
+            //         )
+            //         rtUpload (
+            //         serverId: 'server-1',
+            //         spec: '''{
+            //             "files": [
+            //                 {
+            //                 "pattern": "frontend.zip",
+            //                 "target": "frontend"
+            //                 }
+            //             ]
+            //         }'''
+            //         )
+            //     }
+            // }
             // stage('Publish Artifact') { // nexus artifact uploader plugin
             //     steps {
             //         nexusArtifactUploader(
