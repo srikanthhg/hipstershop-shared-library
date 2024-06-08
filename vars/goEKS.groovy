@@ -16,7 +16,7 @@ def call(Map configMap){
         environment{
             packageVersion = ''
             nexusURL = '172.31.71.176:8081'
-            ACCOUNT_ID = ""
+            ACCOUNT_ID = "608782704145"
             REGION = "us-east-1"
         }
         tools {
@@ -84,7 +84,7 @@ def call(Map configMap){
                     """
                 }
             }
-            // stage('Publish build info') { //jfrog Artifactory
+            // stage('Publish build info') { //Artifactory and jfrog plugins need to be installed
             //     steps {
             //         rtServer (
             //         id: 'server-1',
