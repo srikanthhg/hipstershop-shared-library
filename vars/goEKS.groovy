@@ -148,10 +148,11 @@ def call(Map configMap){
 
             stage('Docker Image Build') {
                 steps{
-                    sh """
-                        pwd
-                        docker build -t srikanthhg/${configMap.component}:${packageVersion} .
-                    """
+                    script{
+                        sh """
+                            docker build -t srikanthhg/${configMap.component}:${packageVersion} .
+                        """
+                    }
                 }
             } 
 
