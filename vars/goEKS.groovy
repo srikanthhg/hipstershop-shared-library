@@ -20,7 +20,7 @@ def call(Map configMap){
             REGION = "us-east-1"
         }
         tools {
-            jfrog 'jfrog-cli'
+            //jfrog 'jfrog-cli'
             go 'golang'
         }
         
