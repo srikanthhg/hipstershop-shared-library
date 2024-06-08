@@ -16,6 +16,8 @@ def call(Map configMap){
         environment{
             packageVersion = ''
             nexusURL = '172.31.71.176:8081'
+            ACCOUNT_ID = ""
+            REGION = "us-east-1"
         }
         tools {
             jfrog 'jfrog-cli'
@@ -82,7 +84,7 @@ def call(Map configMap){
                     """
                 }
             }
-            stage('Publish build info') {
+            stage('Publish build info') { //jfrog Artifactory
                 steps {
                     rtServer (
                     id: 'server-1',
@@ -142,7 +144,45 @@ def call(Map configMap){
                         
                     }
                 }
-            }       
+            }  
+
+            stage('Docker Image Build') {
+                steps{
+                    sh """
+                        docker build -t srikanthhg/${configMap.component}:${packageVersion} .
+                    """
+                }
+            } 
+
+            stage('Docker Image Scan') {
+                steps {
+                    sh"""
+                        trivy image --format table -o trivy-image-report.html srikanthhg/${configMap.component}:${packageVersion} 
+                    """
+                }
+            }
+
+            stage('Publish Docker Image') { //docke and docker pipeline plugin installed
+                steps{
+                    script{
+                        withDockerRegistry(credentialsId: 'docker-auth') {
+                            sh "docker push srikanthhg/${configMap.component}:${packageVersion}"
+                        }
+                    }    
+                }
+            }   
+
+            stage('ECR Push'){
+                steps{
+                    script{
+                        sh """
+                        aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+                        docker tag srikanthhg/${component}:${packageVersion} ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
+                        docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
+                        """
+                    }
+                }
+            } 
 
 
         }
