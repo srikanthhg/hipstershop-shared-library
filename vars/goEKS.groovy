@@ -167,7 +167,7 @@ def call(Map configMap){
             stage('Publish Docker Image') { //docke and docker pipeline plugin installed
                 steps{
                     script{
-                        withDockerRegistry(credentialsId: 'docker-auth') {
+                        withDockerRegistry([usernamePassword(credentialsId: 'docker-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh "docker push srikanthhg/${configMap.component}:${packageVersion}"
                         }
                     }    
