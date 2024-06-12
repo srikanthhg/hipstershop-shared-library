@@ -22,6 +22,7 @@ def call(Map configMap){
         tools {
             //jfrog 'jfrog-cli'
             go 'golang'
+            docker 'docker'
         }
         
         options {
