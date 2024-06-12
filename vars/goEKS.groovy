@@ -22,7 +22,6 @@ def call(Map configMap){
         tools {
             //jfrog 'jfrog-cli'
             go 'golang'
-            dockerTool 'docker'
         }
         
         options {
@@ -151,8 +150,6 @@ def call(Map configMap){
                 steps{
                     script{
                         sh """
-                            docker --version
-                            sudo -S systemctl start docker
                             docker build -t srikanthhg/${configMap.component}:${packageVersion} .
                         """
                     }
