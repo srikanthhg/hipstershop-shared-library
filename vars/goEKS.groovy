@@ -151,6 +151,7 @@ def call(Map configMap){
                 steps{
                     script{
                         sh """
+                            docker --version
                             docker build -t srikanthhg/${configMap.component}:${packageVersion} .
                         """
                     }
