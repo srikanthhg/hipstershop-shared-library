@@ -152,7 +152,7 @@ def call(Map configMap){
                     script{
                         sh """
                             docker --version
-                            sudo systemctl start docker
+                            sudo -S systemctl start docker
                             docker build -t srikanthhg/${configMap.component}:${packageVersion} .
                         """
                     }
