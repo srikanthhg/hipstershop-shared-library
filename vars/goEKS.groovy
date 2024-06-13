@@ -172,18 +172,24 @@ def call(Map configMap){
                         }
                     }    
                 }
-            }   
+            }  
+            stage('AWS login'){
+                steps{
+                    script{
+                        sh """
+                        aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+                        """
+                    }
+                }
+            }  
 
             stage('ECR Push'){
                 steps{
                     script{
-                        withAWS(region: ${REGION}, credentials: aws-cred){
-                            sh """
-                            aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-                            docker tag srikanthhg/${component}:${packageVersion} ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
-                            docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
-                            """
-                        }
+                        sh """
+                        docker tag srikanthhg/${component}:${packageVersion} ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
+                        docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
+                        """ 
                     }
                 }
             } 
