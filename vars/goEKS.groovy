@@ -188,8 +188,8 @@ def call(Map configMap){
                 steps{
                     script{
                         sh """
-                        docker tag srikanthhg/${component}:${packageVersion} ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
-                        docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${component}:${packageVersion}
+                        docker tag srikanthhg/${configMap.component}:${packageVersion} ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${configMap.component}:${packageVersion}
+                        docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${configMap.component}:${packageVersion}
                         """ 
                     }
                 }
