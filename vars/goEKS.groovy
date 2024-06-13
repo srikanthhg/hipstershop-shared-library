@@ -150,6 +150,7 @@ def call(Map configMap){
                 steps{
                     script{
                         sh """
+                            docker system prune -f
                             docker build -t srikanthhg/${configMap.component}:${packageVersion} .
                         """
                     }
