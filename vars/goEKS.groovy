@@ -174,7 +174,7 @@ def call(Map configMap){
                     }    
                 }
             }  
-            stage('AWS login'){
+            stage('AWS login'){ //aws cli install
                 steps{
                     script{
                         sh """
